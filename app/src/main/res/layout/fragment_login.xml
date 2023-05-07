@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black"
+    tools:context=".ui.login_screen.LoginFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/appNameGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.25" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/mobileEmailTextGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.50" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/socialSignInGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.75" />
+
+        <TextView
+            android:id="@+id/app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_15"
+            android:text="@string/a2z"
+            android:textAlignment="center"
+            android:textSize="@dimen/appNameFontSize"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/appNameGuideLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/mobileEmailEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_15"
+            android:padding="5dp"
+            android:visibility="visible"
+            app:boxCornerRadiusBottomEnd="@dimen/dp_15"
+            app:boxCornerRadiusBottomStart="@dimen/dp_15"
+            app:boxCornerRadiusTopEnd="@dimen/dp_15"
+            app:boxCornerRadiusTopStart="@dimen/dp_15"
+            app:layout_constraintBottom_toTopOf="@+id/mobileEmailTextGuideLine">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/mobile_number"
+                android:inputType="phone" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/otpField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_15"
+            android:padding="5dp"
+            android:visibility="gone"
+            app:boxCornerRadiusBottomEnd="@dimen/dp_15"
+            app:boxCornerRadiusBottomStart="@dimen/dp_15"
+            app:boxCornerRadiusTopEnd="@dimen/dp_15"
+            app:boxCornerRadiusTopStart="@dimen/dp_15"
+            app:layout_constraintBottom_toTopOf="@+id/mobileEmailTextGuideLine">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/otp"
+                android:inputType="phone" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/continueButton"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_margin="@dimen/dp_15"
+            android:text="@string/continue_button"
+            app:cornerRadius="@dimen/dp_15"
+            app:layout_constraintTop_toBottomOf="@+id/mobileEmailTextGuideLine" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="@+id/app_name"
+            app:layout_constraintStart_toStartOf="@+id/app_name"
+            app:layout_constraintTop_toBottomOf="@+id/socialSignInGuideLine" />
+
+
+        <TextView
+            android:id="@+id/signInTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_15"
+            android:text="@string/sign_in_with"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="@+id/view"
+            app:layout_constraintStart_toStartOf="@+id/view"
+            app:layout_constraintTop_toBottomOf="@+id/socialSignInGuideLine" />
+
+        <ImageButton
+            android:id="@+id/facebookIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_15"
+            android:background="@color/black"
+            android:src="@drawable/icons8_facebook_1"
+            app:layout_constraintStart_toStartOf="@+id/verticalGuideLineForSocialLogin"
+            app:layout_constraintTop_toBottomOf="@+id/signInTextView" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/or"
+            app:layout_constraintBottom_toBottomOf="@+id/facebookIcon"
+            app:layout_constraintEnd_toStartOf="@+id/googleIcon"
+            app:layout_constraintStart_toEndOf="@+id/facebookIcon"
+            app:layout_constraintTop_toTopOf="@+id/googleIcon" />
+
+        <ImageButton
+            android:id="@+id/googleIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_15"
+            android:background="@color/black"
+            android:src="@drawable/icons8_google_1"
+            app:layout_constraintEnd_toEndOf="@+id/verticalGuideLineForGoogle"
+            app:layout_constraintTop_toBottomOf="@+id/signInTextView" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/verticalGuideLineForSocialLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.30" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/verticalGuideLineForGoogle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.70" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</FrameLayout>

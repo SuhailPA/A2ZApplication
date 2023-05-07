@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="appNameFontSize">25sp</dimen>
+    <dimen name="dp_15">15</dimen>
+    <dimen name="button_height">60</dimen>
+</resources>
