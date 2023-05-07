@@ -1,11 +1,16 @@
 package com.example.a2zapplication.ui.login_screen
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -13,6 +18,12 @@ import com.example.a2zapplication.R
 import com.example.a2zapplication.databinding.FragmentLoginBinding
 import com.example.a2zapplication.utils.AllEvents
 import com.example.a2zapplication.utils.Messages
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.ktx.auth
@@ -26,6 +37,7 @@ class LoginFragment : Fragment() {
 
     private var binding: FragmentLoginBinding? = null
     private val viewModel: LoginViewModel by viewModels()
+    private lateinit var launcher: ActivityResultLauncher<IntentSenderRequest>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -38,7 +50,28 @@ class LoginFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentLoginBinding.inflate(inflater, container, false)
         initUI()
+        launcher = registerForActivityResult(
+            ActivityResultContracts.StartIntentSenderForResult(),
+            ::handleSignInResult
+        )
+
+
         return binding?.root
+    }
+
+    private fun handleSignInResult(result: ActivityResult) {
+        val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        try {
+            if (task.isSuccessful) {
+
+            } else {
+                val account = task.getResult(ApiException::class.java)
+                Toast.makeText(context, account.displayName ?: account.email, Toast.LENGTH_LONG)
+                    .show()
+            }
+        } catch (ex: ApiException) {
+            Toast.makeText(context, ex.localizedMessage, Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun initUI() {
@@ -53,7 +86,15 @@ class LoginFragment : Fragment() {
                 if (otp.length < 6) binding?.otpField?.error = getString(R.string.invalid_otp)
                 else viewModel.getCredentials(otp)
             }
+        }
 
+        binding?.googleIcon?.setOnClickListener {
+            viewModel.beginSignInGoogleOneTap()
+        }
+
+        viewModel.beginSignInResult.observe(viewLifecycleOwner) {
+            val intentSenderRequest = IntentSenderRequest.Builder(it.pendingIntent).build()
+            launcher.launch(intentSenderRequest)
         }
 
         viewModel.allEvents.observe(viewLifecycleOwner) { event ->
@@ -84,6 +125,8 @@ class LoginFragment : Fragment() {
                 is AllEvents.Error -> {
                     binding?.mobileEmailEditText?.error = event.error
                 }
+
+                else -> {}
             }
         }
     }

@@ -1,9 +1,16 @@
 package com.example.a2zapplication.di
 
+import android.app.Activity
+import android.app.Application
+import android.content.Context
 import com.example.a2zapplication.repository.login.AuthRepository
 import com.example.a2zapplication.repository.login.BaseAuthRepository
 import com.example.a2zapplication.repository.login.firebaseAuthenticator.BaseAuthenticator
 import com.example.a2zapplication.repository.login.firebaseAuthenticator.FirebaseAuthenticator
+import com.example.a2zapplication.repository.login.googleAuthenticator.BaseGoogleAuthenticator
+import com.example.a2zapplication.repository.login.googleAuthenticator.GoogleAuthenticator
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.identity.SignInClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,7 +29,32 @@ object A2ZModule {
 
     @Provides
     @Singleton
-    fun providesBaseRepository(baseAuthenticator: BaseAuthenticator) : BaseAuthRepository {
-        return AuthRepository(baseAuthenticator)
+    fun provideGoogleBasAuthenticator(
+        context: Context,
+        oneTapClient: SignInClient
+    ): BaseGoogleAuthenticator {
+        return GoogleAuthenticator(context, oneTapClient)
+    }
+
+    @Provides
+    @Singleton
+    fun providesBaseRepository(
+        baseAuthenticator: BaseAuthenticator,
+        baseGoogleAuthenticator: BaseGoogleAuthenticator
+    ): BaseAuthRepository {
+        return AuthRepository(baseAuthenticator, baseGoogleAuthenticator)
+    }
+
+    @Provides
+    @Singleton
+    fun providesContext(application: Application): Context {
+        return application.applicationContext
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideGoogleOneTapClient(context: Context): SignInClient {
+        return Identity.getSignInClient(context)
     }
 }

@@ -1,11 +1,16 @@
 package com.example.a2zapplication.ui.login_screen
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.a2zapplication.repository.login.BaseAuthRepository
 import com.example.a2zapplication.utils.AllEvents
 import com.example.a2zapplication.utils.Messages
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.BeginSignInRequest.GoogleIdTokenRequestOptions
+import com.google.android.gms.auth.api.identity.BeginSignInResult
+import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -31,7 +36,7 @@ class LoginViewModel @Inject constructor(
     lateinit var token: PhoneAuthProvider.ForceResendingToken
     var allChannel = Channel<AllEvents>()
     val allEvents = allChannel.receiveAsFlow().asLiveData()
-    lateinit var phoneAuthCredentials: PhoneAuthCredential
+    var beginSignInResult = MutableLiveData<BeginSignInResult>()
 
     init {
         onVerificationCallbackMethod()
@@ -81,11 +86,11 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun signInWithCredentials (phoneAuthCredential: PhoneAuthCredential) {
+    fun signInWithCredentials(phoneAuthCredential: PhoneAuthCredential) {
         viewModelScope.launch {
-            repository.sigInWithCredentials(phoneAuthCredential).addOnCompleteListener {task ->
+            repository.sigInWithCredentials(phoneAuthCredential).addOnCompleteListener { task ->
                 viewModelScope.launch {
-                    if (task.isSuccessful){
+                    if (task.isSuccessful) {
                         allChannel.send(AllEvents.Message(Messages.LOGGED_IN))
                     } else {
                         allChannel.send(AllEvents.Error(task.exception?.message.orEmpty()))
@@ -94,6 +99,17 @@ class LoginViewModel @Inject constructor(
             }
 
         }
+    }
 
+    fun beginSignInGoogleOneTap() {
+        viewModelScope.launch {
+            repository.googleSignOneTap().addOnSuccessListener {
+                beginSignInResult.value = it
+            }.addOnFailureListener {
+                viewModelScope.launch {
+                    allChannel.send(AllEvents.Error(it.message.orEmpty()))
+                }
+            }
+        }
     }
 }

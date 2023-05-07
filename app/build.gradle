@@ -41,11 +41,16 @@ android {
 
 dependencies {
 
+    implementation 'androidx.fragment:fragment:1.5.7'
+
     //Firebase
     implementation platform('com.google.firebase:firebase-bom:32.0.0')
 
     //Firebase Authentication
     implementation 'com.google.firebase:firebase-auth-ktx'
+
+    // Google Play services library for google login
+    implementation 'com.google.android.gms:play-services-auth:20.5.0'
 
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")

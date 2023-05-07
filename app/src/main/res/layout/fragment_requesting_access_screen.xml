@@ -6,5 +6,11 @@
     android:background="@color/black"
     tools:context=".ui.RequestingAccessScreen">
 
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Sign Out"
+        android:id="@+id/signOut"/>
 
 </FrameLayout>
