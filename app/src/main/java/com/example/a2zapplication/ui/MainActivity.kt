@@ -1,7 +1,8 @@
-package com.example.a2zapplication
+package com.example.a2zapplication.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.a2zapplication.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
