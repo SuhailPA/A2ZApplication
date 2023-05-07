@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import com.example.a2zapplication.R
 import com.example.a2zapplication.databinding.FragmentLoginBinding
 import com.example.a2zapplication.utils.AllEvents
+import com.example.a2zapplication.utils.Messages
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.ktx.auth
@@ -45,11 +46,11 @@ class LoginFragment : Fragment() {
             if (binding?.otpField?.isVisible == false) {
                 val phoneNumber = binding?.mobileEmailEditText?.editText?.text.toString()
                 if (phoneNumber.length < 10) binding?.mobileEmailEditText?.error =
-                    "Kindly enter the valid phone number"
+                    getString(R.string.kindly_enter_the_valid_phone_number)
                 else setPhoneAuthOptions("+91$phoneNumber")
             } else {
                 val otp = binding?.otpField?.editText?.text.toString()
-                if (otp.length < 6) binding?.otpField?.error = "Invalid OTP"
+                if (otp.length < 6) binding?.otpField?.error = getString(R.string.invalid_otp)
                 else viewModel.getCredentials(otp)
             }
 
@@ -58,9 +59,26 @@ class LoginFragment : Fragment() {
         viewModel.allEvents.observe(viewLifecycleOwner) { event ->
             when (event) {
                 is AllEvents.Message -> {
-                    Toast.makeText(context, event.message, Toast.LENGTH_LONG).show()
-                    binding?.mobileEmailEditText?.visibility = View.GONE
-                    binding?.otpField?.visibility = View.VISIBLE
+                    when (event.message) {
+                        Messages.OTP_DELIVERED -> {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.otp_delivered),
+                                Toast.LENGTH_LONG
+                            ).show()
+                            binding?.mobileEmailEditText?.visibility = View.GONE
+                            binding?.otpField?.visibility = View.VISIBLE
+                        }
+
+                        Messages.LOGGED_IN -> {
+                            Toast.makeText(
+                                context,
+                                getString(R.string.successfully_loggedin),
+                                Toast.LENGTH_LONG
+                            )
+                                .show()
+                        }
+                    }
                 }
 
                 is AllEvents.Error -> {

@@ -5,6 +5,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.a2zapplication.repository.login.BaseAuthRepository
 import com.example.a2zapplication.utils.AllEvents
+import com.example.a2zapplication.utils.Messages
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -65,7 +66,7 @@ class LoginViewModel @Inject constructor(
 
             override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
                 viewModelScope.launch {
-                    allChannel.send(AllEvents.Message("OTP delivered to the given number"))
+                    allChannel.send(AllEvents.Message(Messages.OTP_DELIVERED))
                     verificationID = p0
                     token = p1
                 }
@@ -85,7 +86,7 @@ class LoginViewModel @Inject constructor(
             repository.sigInWithCredentials(phoneAuthCredential).addOnCompleteListener {task ->
                 viewModelScope.launch {
                     if (task.isSuccessful){
-                        allChannel.send(AllEvents.Message("Successfully logged In"))
+                        allChannel.send(AllEvents.Message(Messages.LOGGED_IN))
                     } else {
                         allChannel.send(AllEvents.Error(task.exception?.message.orEmpty()))
                     }

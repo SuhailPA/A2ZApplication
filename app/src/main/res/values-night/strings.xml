@@ -6,4 +6,8 @@
     <string name="continue_button">Continue</string>
     <string name="sign_in_with">Sign in with</string>
     <string name="or">or</string>
+    <string name="successfully_loggedin">Successfully LoggedIn</string>
+    <string name="otp_delivered">OTP Delivered</string>
+    <string name="kindly_enter_the_valid_phone_number">Kindly enter the valid phone number</string>
+    <string name="invalid_otp">Invalid OTP</string>
 </resources>
