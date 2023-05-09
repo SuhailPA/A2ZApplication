@@ -1,4 +1,4 @@
-package com.example.a2zapplication.ui
+package com.example.a2zapplication.ui.request_access_screen
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

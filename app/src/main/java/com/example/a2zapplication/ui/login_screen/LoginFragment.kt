@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.example.a2zapplication.R
 import com.example.a2zapplication.databinding.FragmentLoginBinding
+import com.example.a2zapplication.utils.AccessType
 import com.example.a2zapplication.utils.AllEvents
 import com.example.a2zapplication.utils.Messages
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
@@ -108,13 +109,31 @@ class LoginFragment : Fragment() {
                                 Toast.LENGTH_LONG
                             )
                                 .show()
-                            binding?.root?.findNavController()?.navigate(R.id.action_loginFragment_to_requestingAccessScreen2)
+                            viewModel.checkAccessForUser()
+
                         }
                     }
                 }
 
                 is AllEvents.Error -> {
                     binding?.mobileEmailEditText?.error = event.error
+                }
+
+                is AllEvents.AccessLevel -> {
+                    when (event.accessType) {
+                        AccessType.APPROVED -> {
+                            Toast.makeText(context, "AccessApproved", Toast.LENGTH_LONG).show()
+                        }
+
+                        else -> {
+                            Toast.makeText(context, "Access Denied", Toast.LENGTH_LONG).show()
+                            binding?.root?.findNavController()
+                                ?.navigate(R.id.action_loginFragment_to_requestingAccessScreen2)
+                        }
+                    }
+                }
+                is AllEvents.FirebaseError -> {
+                    Toast.makeText(context,event.error,Toast.LENGTH_LONG).show()
                 }
 
                 else -> {}

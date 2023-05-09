@@ -9,13 +9,15 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.tasks.await
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class FirebaseAuthenticator : BaseAuthenticator {
+class FirebaseAuthenticator @Inject constructor(private val db : FirebaseFirestore, private val auth: FirebaseAuth): BaseAuthenticator {
     override suspend fun verifyPhoneNumber(options: PhoneAuthOptions) {
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
@@ -25,4 +27,8 @@ class FirebaseAuthenticator : BaseAuthenticator {
 
     override suspend fun signInWithCredentials(phoneAuthCredential: PhoneAuthCredential): Task<AuthResult> =
         FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential)
+
+    override suspend fun checkUserAccess(): Task<DocumentSnapshot>?  =
+        auth.currentUser?.uid?.let { db.collection("requestToAccess").document(it).get() }
+
 }

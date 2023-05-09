@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.a2zapplication.repository.login.BaseAuthRepository
+import com.example.a2zapplication.utils.AccessType
 import com.example.a2zapplication.utils.AllEvents
 import com.example.a2zapplication.utils.Messages
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
@@ -15,6 +16,7 @@ import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthMissingActivityForRecaptchaException
 import com.google.firebase.auth.PhoneAuthCredential
@@ -29,7 +31,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val repository: BaseAuthRepository
+    private val repository: BaseAuthRepository,
+    private val auth : FirebaseAuth
 ) : ViewModel() {
 
 
@@ -127,5 +130,23 @@ class LoginViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun checkAccessForUser(){
+        viewModelScope.launch {
+            repository.checkUserAccess()?.addOnCompleteListener { task->
+                viewModelScope.launch {
+                    if (task.isSuccessful && task.result.exists()){
+                        val accessType : Boolean = task.result.get("accessApproved") as Boolean
+                        if (accessType)allChannel.send(AllEvents.AccessLevel(AccessType.APPROVED))
+                        else allChannel.send(AllEvents.AccessLevel(AccessType.REJECTED))
+
+                    } else {
+                        allChannel.send(AllEvents.AccessLevel(AccessType.REJECTED))
+                    }
+                }
+            }
+        }
+
     }
 }

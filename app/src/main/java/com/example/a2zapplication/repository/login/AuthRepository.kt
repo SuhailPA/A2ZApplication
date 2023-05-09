@@ -13,6 +13,7 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.firestore.DocumentSnapshot
 import javax.inject.Inject
 
 class AuthRepository @Inject constructor(
@@ -35,6 +36,10 @@ class AuthRepository @Inject constructor(
 
     override suspend fun getGoogleID(data: Intent) : Task<AuthResult> =
         googleAuthenticator.getGoogleTokenID(data)
+
+    override suspend fun checkUserAccess(): Task<DocumentSnapshot>? =
+        baseAuthenticator.checkUserAccess()
+
 
 
 }

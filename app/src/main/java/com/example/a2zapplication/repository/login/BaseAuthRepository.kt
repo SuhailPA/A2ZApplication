@@ -9,6 +9,7 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.firestore.DocumentSnapshot
 
 interface BaseAuthRepository {
     suspend fun verifyPhoneNumber(
@@ -21,4 +22,6 @@ interface BaseAuthRepository {
     suspend fun googleSignOneTap(): Task<BeginSignInResult>
 
     suspend fun getGoogleID(data : Intent) : Task<AuthResult>
+
+    suspend fun checkUserAccess() : Task<DocumentSnapshot>?
 }

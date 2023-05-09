@@ -11,6 +11,11 @@ import com.example.a2zapplication.repository.login.googleAuthenticator.BaseGoogl
 import com.example.a2zapplication.repository.login.googleAuthenticator.GoogleAuthenticator
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,8 +28,8 @@ object A2ZModule {
 
     @Provides
     @Singleton
-    fun providesBaseAuthenticator() : BaseAuthenticator {
-        return FirebaseAuthenticator()
+    fun providesBaseAuthenticator(db: FirebaseFirestore, auth: FirebaseAuth): BaseAuthenticator {
+        return FirebaseAuthenticator(db, auth)
     }
 
     @Provides
@@ -57,4 +62,12 @@ object A2ZModule {
     fun provideGoogleOneTapClient(context: Context): SignInClient {
         return Identity.getSignInClient(context)
     }
+
+    @Provides
+    @Singleton
+    fun providesFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+
+    @Provides
+    @Singleton
+    fun providesFirebaseFirestore(): FirebaseFirestore = Firebase.firestore
 }
