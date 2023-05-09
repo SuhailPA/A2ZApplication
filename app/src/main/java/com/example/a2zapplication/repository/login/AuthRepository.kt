@@ -1,6 +1,7 @@
 package com.example.a2zapplication.repository.login
 
 import android.content.Context
+import android.content.Intent
 import com.example.a2zapplication.R
 import com.example.a2zapplication.repository.login.firebaseAuthenticator.BaseAuthenticator
 import com.example.a2zapplication.repository.login.googleAuthenticator.BaseGoogleAuthenticator
@@ -8,6 +9,7 @@ import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
@@ -30,6 +32,9 @@ class AuthRepository @Inject constructor(
     override suspend fun googleSignOneTap() : Task<BeginSignInResult> =
         googleAuthenticator.googleSignInOneTap()
 
+
+    override suspend fun getGoogleID(data: Intent) : Task<AuthResult> =
+        googleAuthenticator.getGoogleTokenID(data)
 
 
 }

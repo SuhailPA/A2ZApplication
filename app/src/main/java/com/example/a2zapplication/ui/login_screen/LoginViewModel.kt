@@ -1,5 +1,7 @@
 package com.example.a2zapplication.ui.login_screen
 
+import android.content.Intent
+import androidx.activity.result.ActivityResult
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -108,6 +110,20 @@ class LoginViewModel @Inject constructor(
             }.addOnFailureListener {
                 viewModelScope.launch {
                     allChannel.send(AllEvents.Error(it.message.orEmpty()))
+                }
+            }
+        }
+    }
+
+    fun getIdFromGoogle(data : Intent) {
+        viewModelScope.launch {
+            repository.getGoogleID(data).addOnCompleteListener { task->
+                viewModelScope.launch {
+                    if (task.isSuccessful){
+                        allChannel.send(AllEvents.Message(Messages.LOGGED_IN))
+                    } else {
+                        allChannel.send(AllEvents.Error(task.exception?.message.orEmpty()))
+                    }
                 }
             }
         }

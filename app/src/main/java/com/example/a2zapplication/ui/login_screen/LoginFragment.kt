@@ -14,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import com.example.a2zapplication.R
 import com.example.a2zapplication.databinding.FragmentLoginBinding
 import com.example.a2zapplication.utils.AllEvents
@@ -60,18 +61,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun handleSignInResult(result: ActivityResult) {
-        val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-        try {
-            if (task.isSuccessful) {
-
-            } else {
-                val account = task.getResult(ApiException::class.java)
-                Toast.makeText(context, account.displayName ?: account.email, Toast.LENGTH_LONG)
-                    .show()
-            }
-        } catch (ex: ApiException) {
-            Toast.makeText(context, ex.localizedMessage, Toast.LENGTH_LONG).show()
-        }
+        result.data?.let { viewModel.getIdFromGoogle(it) }
     }
 
     private fun initUI() {
@@ -118,6 +108,7 @@ class LoginFragment : Fragment() {
                                 Toast.LENGTH_LONG
                             )
                                 .show()
+                            binding?.root?.findNavController()?.navigate(R.id.action_loginFragment_to_requestingAccessScreen2)
                         }
                     }
                 }
