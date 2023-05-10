@@ -31,10 +31,7 @@ class GoogleAuthenticator @Inject constructor(
     override suspend fun getGoogleTokenID(data: Intent) : Task<AuthResult> {
         val credential : SignInCredential = oneTapClient.getSignInCredentialFromIntent(data)
         val idToken : String? = credential.googleIdToken
-        val userName = credential.id
-        val password = credential.password
         val firebaseCredential = GoogleAuthProvider.getCredential(idToken,null)
-
         return Firebase.auth.signInWithCredential(firebaseCredential)
     }
 }

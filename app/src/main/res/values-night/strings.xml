@@ -10,4 +10,7 @@
     <string name="otp_delivered">OTP Delivered</string>
     <string name="kindly_enter_the_valid_phone_number">Kindly enter the valid phone number</string>
     <string name="invalid_otp">Invalid OTP</string>
+    <string name="request_access_text">Sorry, currently you don\'t have access to view the content, Kindly request for the access permission.</string>
+    <string name="close">Close</string>
+    <string name="request">Request</string>
 </resources>

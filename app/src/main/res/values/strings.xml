@@ -14,4 +14,7 @@
     <string name="invalid_otp">Invalid OTP</string>
 
     <string name="server_client_id">495053239530-2vvces9np5cbbvr48qdger6d7bosl008.apps.googleusercontent.com</string>
+    <string name="request_access_text">Sorry, currently you don\'t have access to view the content, Kindly request for the access permission.</string>
+    <string name="close">Close</string>
+    <string name="request">Request</string>
 </resources>
