@@ -9,6 +9,10 @@ import com.example.a2zapplication.repository.login.firebaseAuthenticator.BaseAut
 import com.example.a2zapplication.repository.login.firebaseAuthenticator.FirebaseAuthenticator
 import com.example.a2zapplication.repository.login.googleAuthenticator.BaseGoogleAuthenticator
 import com.example.a2zapplication.repository.login.googleAuthenticator.GoogleAuthenticator
+import com.example.a2zapplication.repository.requestAccess.BaseDbAccess
+import com.example.a2zapplication.repository.requestAccess.FirestoreDbAccess
+import com.example.a2zapplication.repository.requestAccess.firebaseDbAccess.FirebaseDbAuthImp
+import com.example.a2zapplication.repository.requestAccess.firebaseDbAccess.FirebaseDbAuthenticator
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.auth.FirebaseAuth
@@ -70,4 +74,19 @@ object A2ZModule {
     @Provides
     @Singleton
     fun providesFirebaseFirestore(): FirebaseFirestore = Firebase.firestore
+
+    @Provides
+    @Singleton
+    fun providesFirebaseDBAccess(
+        db: FirebaseFirestore,
+        auth: FirebaseAuth
+    ): FirebaseDbAuthenticator {
+        return FirebaseDbAuthImp(db, auth)
+    }
+
+    @Provides
+    @Singleton
+    fun providesBaseDBAccess(firebaseDBAuthenticator : FirebaseDbAuthenticator) : BaseDbAccess{
+        return FirestoreDbAccess(firebaseDBAuthenticator)
+    }
 }

@@ -112,6 +112,8 @@ class LoginFragment : Fragment() {
                             viewModel.checkAccessForUser()
 
                         }
+
+                        else -> {}
                     }
                 }
 

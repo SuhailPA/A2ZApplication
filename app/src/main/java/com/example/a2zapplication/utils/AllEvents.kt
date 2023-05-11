@@ -10,7 +10,8 @@ sealed class AllEvents {
 
 enum class Messages{
     LOGGED_IN,
-    OTP_DELIVERED
+    OTP_DELIVERED,
+    REQUEST_SENT
 }
 
 enum class AccessType{

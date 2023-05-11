@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/materialButton"
+        android:id="@+id/requestAccessBtn"
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_height"
         app:cornerRadius="@dimen/button_corner_radius"
