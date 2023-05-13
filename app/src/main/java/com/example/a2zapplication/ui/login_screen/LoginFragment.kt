@@ -124,7 +124,7 @@ class LoginFragment : Fragment() {
                 is AllEvents.AccessLevel -> {
                     when (event.accessType) {
                         AccessType.APPROVED -> {
-                            Toast.makeText(context, "AccessApproved", Toast.LENGTH_LONG).show()
+
                         }
 
                         else -> {

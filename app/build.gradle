@@ -40,8 +40,19 @@ android {
 }
 
 dependencies {
-
     implementation 'androidx.fragment:fragment:1.5.7'
+
+    //RoomDatabase
+    implementation("androidx.room:room-runtime:2.5.1")
+    annotationProcessor("androidx.room:room-compiler:2.5.1")
+
+//    // To use Kotlin annotation processing tool (kapt)
+//    kapt("androidx.room:room-compiler:2.5.1")
+//    // To use Kotlin Symbol Processing (KSP)
+//    ksp("androidx.room:room-compiler:2.5.1")
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:2.5.1")
 
     //Firebase
     implementation platform('com.google.firebase:firebase-bom:32.0.0')

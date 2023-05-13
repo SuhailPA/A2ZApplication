@@ -3,6 +3,9 @@ package com.example.a2zapplication.di
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import androidx.room.Room
+import com.example.a2zapplication.data.roomDB.A2ZDatabase
+import com.example.a2zapplication.data.roomDB.dao.UserDao
 import com.example.a2zapplication.repository.login.AuthRepository
 import com.example.a2zapplication.repository.login.BaseAuthRepository
 import com.example.a2zapplication.repository.login.firebaseAuthenticator.BaseAuthenticator
@@ -23,6 +26,7 @@ import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -88,5 +92,21 @@ object A2ZModule {
     @Singleton
     fun providesBaseDBAccess(firebaseDBAuthenticator : FirebaseDbAuthenticator) : BaseDbAccess{
         return FirestoreDbAccess(firebaseDBAuthenticator)
+    }
+
+    @Provides
+    @Singleton
+    fun providesLocalDB(@ApplicationContext context: Context) : A2ZDatabase {
+        return Room.databaseBuilder(
+            context.applicationContext,
+            A2ZDatabase::class.java,
+            "MainDatabase",
+        ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun providesDao(a2ZDatabase: A2ZDatabase) : UserDao{
+        return a2ZDatabase.userDao()
     }
 }
