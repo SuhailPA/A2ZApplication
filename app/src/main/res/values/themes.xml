@@ -2,9 +2,49 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.A2ZApplication" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <item name="materialButtonStyle">@style/MaterialButtonStyle</item>
+        <item name="textInputOutlinedStyle">@style/TextInputOutlinedStyle</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:statusBarColor">@color/black</item>
+    </style>
+
+    <style name="TextInputOutlinedStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="boxStrokeColor">@color/text_input_layout_stroke_color</item>
+        <item name="android:textColorHint">@color/grey</item>
+        <item name="colorControlActivated">@color/white</item>
+        <item name="hintTextColor">@color/white</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/dp_15</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/dp_15</item>
+        <item name="boxCornerRadiusTopStart">@dimen/dp_15</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/dp_15</item>
+    </style>
+
+    <style name="ThemeOverlay.App.ExposedDropdownMenu" parent="">
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorOnSurface">@color/grey</item>
+        <item name="colorSurface">@android:color/transparent</item>
+    </style>
+
+    <style name="MaterialButtonStyle" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="backgroundTint">@color/red</item>
+        <item name="cornerRadius">10dp</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="Theme.A2ZApplication" parent="Base.Theme.A2ZApplication" />
+
+    <style name="TextInputExposedDropDownMenu" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.ExposedDropdownMenu</item>
+    </style>
+
+    <style name="ThemeOverlay.AppTheme.TextInputEditText.Outlined" parent="">
+        <item name="colorControlActivated">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorAccent">@color/white</item>
+    </style>
+
 </resources>

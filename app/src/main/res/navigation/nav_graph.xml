@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/addUserDetailsScreen">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -19,4 +19,9 @@
         android:name="com.example.a2zapplication.ui.request_access_screen.RequestingAccessScreen"
         android:label="fragment_requesting_access_screen"
         tools:layout="@layout/fragment_requesting_access_screen" />
+    <fragment
+        android:id="@+id/addUserDetailsScreen"
+        android:name="com.example.a2zapplication.ui.add_user_details_screen.AddUserDetailsScreen"
+        android:label="fragment_add_user_details_screen"
+        tools:layout="@layout/fragment_add_user_details_screen" />
 </navigation>
