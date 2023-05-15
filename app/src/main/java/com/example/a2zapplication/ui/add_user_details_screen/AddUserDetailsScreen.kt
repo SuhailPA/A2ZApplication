@@ -67,7 +67,7 @@ class AddUserDetailsScreen : Fragment() {
              */
             userName.editText?.setText(args.UserDetails.name.orEmpty())
             email.editText?.setText(args.UserDetails.emailId.orEmpty())
-            number.editText?.setText(args.UserDetails.number.orEmpty())
+            number.editText?.setText(args.UserDetails.number?.substringAfter("+91"))
 
             classTextView.setOnItemClickListener { _, _, _, _ -> }
 

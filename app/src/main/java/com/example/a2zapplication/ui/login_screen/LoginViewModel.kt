@@ -32,6 +32,7 @@ class LoginViewModel @Inject constructor(
 ) : ViewModel() {
 
 
+    lateinit var phoneNumber : String
     lateinit var userDetails: User
     lateinit var callback: PhoneAuthProvider.OnVerificationStateChangedCallbacks
     lateinit var verificationID: String
@@ -93,7 +94,7 @@ class LoginViewModel @Inject constructor(
             repository.sigInWithCredentials(phoneAuthCredential).addOnCompleteListener { task ->
                 viewModelScope.launch {
                     if (task.isSuccessful) {
-                        userDetails = User(auth.currentUser?.uid.toString())
+                        userDetails = User(auth.currentUser?.uid.toString(), number = phoneNumber)
                         allChannel.send(AllEvents.Message(Messages.LOGGED_IN))
                     } else {
                         allChannel.send(AllEvents.Error(task.exception?.message.orEmpty()))

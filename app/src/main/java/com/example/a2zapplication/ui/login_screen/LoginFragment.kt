@@ -161,7 +161,7 @@ class LoginFragment : Fragment() {
                 .build()
         }
         if (options != null) {
-            viewModel.userDetails.number = phoneNumber
+            viewModel.phoneNumber = phoneNumber
             viewModel.verifyPhoneNumber(options)
         }
     }
