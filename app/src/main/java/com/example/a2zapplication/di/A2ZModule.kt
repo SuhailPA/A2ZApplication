@@ -92,8 +92,8 @@ object A2ZModule {
 
     @Provides
     @Singleton
-    fun providesBaseDBAccess(firebaseDBAuthenticator : FirebaseDbAuthenticator) : BaseDbAccess{
-        return FirestoreDbAccess(firebaseDBAuthenticator)
+    fun providesBaseDBAccess(firebaseDBAuthenticator : FirebaseDbAuthenticator, userDetailsRepo: UserDetailsRepo) : BaseDbAccess{
+        return FirestoreDbAccess(firebaseDBAuthenticator,userDetailsRepo)
     }
 
     @Provides

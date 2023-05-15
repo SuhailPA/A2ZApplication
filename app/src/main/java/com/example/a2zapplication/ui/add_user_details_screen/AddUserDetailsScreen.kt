@@ -15,10 +15,14 @@ import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.fragment.app.clearFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.example.a2zapplication.R
+import com.example.a2zapplication.data.model.firebase.User
 import com.example.a2zapplication.databinding.FragmentAddUserDetailsScreenBinding
+import com.example.a2zapplication.utils.AllEvents
+import com.example.a2zapplication.utils.Messages
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,6 +49,7 @@ class AddUserDetailsScreen : Fragment() {
 
     private fun initUI() {
         initDropDownUI()
+        observeTheResponce()
         binding.apply {
             /**
              * Getting the dropdown list items from firebase
@@ -74,13 +79,36 @@ class AddUserDetailsScreen : Fragment() {
                         FieldType.NUMBER)
                 ) {
                     if (classTextView.text.toString().isNotEmpty()){
-                        Toast.makeText(context, "Everything works fine", Toast.LENGTH_LONG).show()
+                        val user = User(
+                           uid= args.UserDetails.uid,
+                           name = userName.editText?.text.toString(),
+                            emailId = email.editText?.text?.toString(),
+                           standard =  classTextView.text.toString(),
+                            number = number.editText?.text.toString(),
+                            photoUrl = args.UserDetails.photoUrl.orEmpty(),
+                            accessApproved = false
+                        )
+                        viewModel.sendRequestForAccess(user)
                     }else {
                         Toast.makeText(context, "Select the class", Toast.LENGTH_LONG).show()
                     }
                 }
             }
         }
+    }
+
+    private fun observeTheResponce() {
+        viewModel.allEvents.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is AllEvents.Message -> {
+                    when(it.message) {
+                        Messages.REQUEST_SENT -> Toast.makeText(context,"Successfully sented the request",Toast.LENGTH_SHORT).show()
+                        else -> {}
+                    }
+                }
+                else ->{}
+            }
+        })
     }
 
     private fun initDropDownUI() {

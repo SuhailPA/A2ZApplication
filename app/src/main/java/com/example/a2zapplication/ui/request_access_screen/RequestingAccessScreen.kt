@@ -47,19 +47,19 @@ class RequestingAccessScreen : Fragment() {
             binding.root.findNavController().navigate(action)
         }
 
-        viewModel.allEvents.observe(viewLifecycleOwner, Observer {
-            when(it){
-                is AllEvents.Message -> {
-                    when(it.message) {
-                        Messages.REQUEST_SENT -> {
-                            Toast.makeText(context,"Request Sent", Toast.LENGTH_LONG).show()
-                        }
-                        else -> {}
-                    }
-                }
-                else -> {}
-            }
-        })
+//        viewModel.allEvents.observe(viewLifecycleOwner, Observer {
+//            when(it){
+//                is AllEvents.Message -> {
+//                    when(it.message) {
+//                        Messages.REQUEST_SENT -> {
+//                            Toast.makeText(context,"Request Sent", Toast.LENGTH_LONG).show()
+//                        }
+//                        else -> {}
+//                    }
+//                }
+//                else -> {}
+//            }
+//        })
         return binding.root
     }
 

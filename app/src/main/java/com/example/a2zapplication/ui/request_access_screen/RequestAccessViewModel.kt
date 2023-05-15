@@ -15,21 +15,11 @@ import javax.inject.Inject
 @HiltViewModel
 class RequestAccessViewModel @Inject constructor(private val repository : BaseDbAccess) : ViewModel() {
 
-    val allChannel = Channel<AllEvents>()
-    val allEvents = allChannel.receiveAsFlow().asLiveData()
     fun setTheRequestForAccess() {
         val requestAccess = hashMapOf(
             "accessApproved" to false
         )
-        viewModelScope.launch {
-            repository.setRequestForAccess(requestAccess)?.addOnCompleteListener {
-                viewModelScope.launch {
-                    if (it.isSuccessful){
-                        allChannel.send(AllEvents.Message(Messages.REQUEST_SENT))
-                    }
-                }
-            }
-        }
+
     }
 
 }
