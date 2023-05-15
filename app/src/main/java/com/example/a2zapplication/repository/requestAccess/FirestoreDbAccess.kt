@@ -1,6 +1,7 @@
 package com.example.a2zapplication.repository.requestAccess
 
 import com.example.a2zapplication.data.model.firebase.User
+import com.example.a2zapplication.data.roomDB.dao.UserDao
 import com.example.a2zapplication.repository.addUserDetails.UserDetailsRepo
 import com.example.a2zapplication.repository.requestAccess.firebaseDbAccess.FirebaseDbAuthenticator
 import com.google.android.gms.tasks.Task
@@ -12,7 +13,9 @@ class FirestoreDbAccess @Inject constructor(private val firebaseDbAuthenticator:
         firebaseDbAuthenticator.setRequestForAccess(user)
 
     override suspend fun fetchClassDetails() = userDetailsRepo.fetchClassDetails()
-
+    override suspend fun storeUserDetailsInRoom(user: User) {
+        userDetailsRepo.storeUserDetailsInRoomDB(user)
+    }
 
 
 }

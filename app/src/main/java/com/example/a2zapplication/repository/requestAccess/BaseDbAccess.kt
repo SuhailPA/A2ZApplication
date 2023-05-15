@@ -8,4 +8,6 @@ interface BaseDbAccess {
     suspend fun setRequestForAccess(user : User) : Task<Void>?
 
     suspend fun fetchClassDetails() : Task<QuerySnapshot>
+
+    suspend fun storeUserDetailsInRoom(user : User)
 }

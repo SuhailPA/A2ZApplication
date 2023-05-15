@@ -92,13 +92,16 @@ object A2ZModule {
 
     @Provides
     @Singleton
-    fun providesBaseDBAccess(firebaseDBAuthenticator : FirebaseDbAuthenticator, userDetailsRepo: UserDetailsRepo) : BaseDbAccess{
-        return FirestoreDbAccess(firebaseDBAuthenticator,userDetailsRepo)
+    fun providesBaseDBAccess(
+        firebaseDBAuthenticator: FirebaseDbAuthenticator,
+        userDetailsRepo: UserDetailsRepo
+    ): BaseDbAccess {
+        return FirestoreDbAccess(firebaseDBAuthenticator, userDetailsRepo)
     }
 
     @Provides
     @Singleton
-    fun providesLocalDB(@ApplicationContext context: Context) : A2ZDatabase {
+    fun providesLocalDB(@ApplicationContext context: Context): A2ZDatabase {
         return Room.databaseBuilder(
             context.applicationContext,
             A2ZDatabase::class.java,
@@ -108,13 +111,13 @@ object A2ZModule {
 
     @Provides
     @Singleton
-    fun providesDao(a2ZDatabase: A2ZDatabase) : UserDao{
+    fun providesDao(a2ZDatabase: A2ZDatabase): UserDao {
         return a2ZDatabase.userDao()
     }
 
     @Provides
     @Singleton
-    fun providesUserDetailsRepo(db: FirebaseFirestore) : UserDetailsRepo {
-        return UserDetailsRepoImp(db)
+    fun providesUserDetailsRepo(db: FirebaseFirestore, userDao: UserDao): UserDetailsRepo {
+        return UserDetailsRepoImp(db, userDao)
     }
 }

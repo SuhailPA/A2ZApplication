@@ -15,11 +15,5 @@ import javax.inject.Inject
 @HiltViewModel
 class RequestAccessViewModel @Inject constructor(private val repository : BaseDbAccess) : ViewModel() {
 
-    fun setTheRequestForAccess() {
-        val requestAccess = hashMapOf(
-            "accessApproved" to false
-        )
-
-    }
 
 }

@@ -39,6 +39,7 @@ class AddUserDetailsViewModel @Inject constructor(
             repository.setRequestForAccess(user)?.addOnCompleteListener {
                 viewModelScope.launch {
                     if (it.isSuccessful){
+                        repository.storeUserDetailsInRoom(user)
                         allChannel.send(AllEvents.Message(Messages.REQUEST_SENT))
                     }
                 }

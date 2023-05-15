@@ -48,10 +48,10 @@ dependencies {
 
     //RoomDatabase
     implementation("androidx.room:room-runtime:2.5.1")
-    annotationProcessor("androidx.room:room-compiler:2.5.1")
+//    annotationProcessor("androidx.room:room-compiler:2.5.1")
 
-//    // To use Kotlin annotation processing tool (kapt)
-//    kapt("androidx.room:room-compiler:2.5.1")
+    // To use Kotlin annotation processing tool (kapt)
+    kapt("androidx.room:room-compiler:2.5.1")
 //    // To use Kotlin Symbol Processing (KSP)
 //    ksp("androidx.room:room-compiler:2.5.1")
 
