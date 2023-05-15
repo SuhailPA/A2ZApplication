@@ -8,7 +8,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.a2zapplication.R
+import com.example.a2zapplication.data.model.firebase.User
 import com.example.a2zapplication.databinding.FragmentRequestingAccessScreenBinding
 import com.example.a2zapplication.utils.AllEvents
 import com.example.a2zapplication.utils.Messages
@@ -20,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class RequestingAccessScreen : Fragment() {
 
+    val args : RequestingAccessScreenArgs by navArgs()
     private val viewModel : RequestAccessViewModel by viewModels()
     private lateinit var binding : FragmentRequestingAccessScreenBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +43,8 @@ class RequestingAccessScreen : Fragment() {
         }
 
         binding.requestAccessBtn.setOnClickListener {
-            viewModel.setTheRequestForAccess()
+            val action = RequestingAccessScreenDirections.actionRequestingAccessScreen2ToAddUserDetailsScreen(args.User)
+            binding.root.findNavController().navigate(action)
         }
 
         viewModel.allEvents.observe(viewLifecycleOwner, Observer {

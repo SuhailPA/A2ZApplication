@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.a2zapplication.data.model.firebase.User
+import com.example.a2zapplication.data.roomDB.UserDetails
 import com.example.a2zapplication.repository.login.BaseAuthRepository
 import com.example.a2zapplication.utils.AccessType
 import com.example.a2zapplication.utils.AllEvents
@@ -32,10 +34,11 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val repository: BaseAuthRepository,
-    private val auth : FirebaseAuth
+    private val auth: FirebaseAuth
 ) : ViewModel() {
 
 
+    lateinit var userDetails: User
     lateinit var callback: PhoneAuthProvider.OnVerificationStateChangedCallbacks
     lateinit var verificationID: String
     lateinit var token: PhoneAuthProvider.ForceResendingToken
@@ -96,6 +99,7 @@ class LoginViewModel @Inject constructor(
             repository.sigInWithCredentials(phoneAuthCredential).addOnCompleteListener { task ->
                 viewModelScope.launch {
                     if (task.isSuccessful) {
+                        userDetails = User(auth.currentUser?.uid.toString())
                         allChannel.send(AllEvents.Message(Messages.LOGGED_IN))
                     } else {
                         allChannel.send(AllEvents.Error(task.exception?.message.orEmpty()))
@@ -118,11 +122,21 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun getIdFromGoogle(data : Intent) {
+    fun getIdFromGoogle(data: Intent) {
         viewModelScope.launch {
-            repository.getGoogleID(data).addOnCompleteListener { task->
+            repository.getGoogleID(data).addOnCompleteListener { task ->
                 viewModelScope.launch {
-                    if (task.isSuccessful){
+                    if (task.isSuccessful) {
+                        auth.currentUser?.let {
+                            userDetails = User(
+                                it.uid,
+                                it.displayName,
+                                it.email,
+                                null,
+                                null,
+                                it.photoUrl.toString()
+                            )
+                        }
                         allChannel.send(AllEvents.Message(Messages.LOGGED_IN))
                     } else {
                         allChannel.send(AllEvents.Error(task.exception?.message.orEmpty()))
@@ -132,13 +146,13 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun checkAccessForUser(){
+    fun checkAccessForUser() {
         viewModelScope.launch {
-            repository.checkUserAccess()?.addOnCompleteListener { task->
+            repository.checkUserAccess()?.addOnCompleteListener { task ->
                 viewModelScope.launch {
-                    if (task.isSuccessful && task.result.exists()){
-                        val accessType : Boolean = task.result.get("accessApproved") as Boolean
-                        if (accessType)allChannel.send(AllEvents.AccessLevel(AccessType.APPROVED))
+                    if (task.isSuccessful && task.result.exists()) {
+                        val accessType: Boolean = task.result.get("accessApproved") as Boolean
+                        if (accessType) allChannel.send(AllEvents.AccessLevel(AccessType.APPROVED))
                         else allChannel.send(AllEvents.AccessLevel(AccessType.REJECTED))
 
                     } else {

@@ -16,6 +16,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.example.a2zapplication.R
+import com.example.a2zapplication.data.model.firebase.User
 import com.example.a2zapplication.databinding.FragmentLoginBinding
 import com.example.a2zapplication.utils.AccessType
 import com.example.a2zapplication.utils.AllEvents
@@ -129,8 +130,12 @@ class LoginFragment : Fragment() {
 
                         else -> {
                             Toast.makeText(context, "Access Denied", Toast.LENGTH_LONG).show()
-                            binding?.root?.findNavController()
-                                ?.navigate(R.id.action_loginFragment_to_requestingAccessScreen2)
+                            val action = viewModel.userDetails.let {
+                                LoginFragmentDirections.actionLoginFragmentToRequestingAccessScreen2(
+                                    it
+                                )
+                            }
+                            binding?.root?.findNavController()?.navigate(action)
                         }
                     }
                 }
@@ -156,6 +161,7 @@ class LoginFragment : Fragment() {
                 .build()
         }
         if (options != null) {
+            viewModel.userDetails.number = phoneNumber
             viewModel.verifyPhoneNumber(options)
         }
     }

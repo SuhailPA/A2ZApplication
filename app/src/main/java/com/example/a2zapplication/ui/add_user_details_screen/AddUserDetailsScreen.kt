@@ -11,27 +11,124 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import androidx.annotation.DrawableRes
+import androidx.fragment.app.clearFragmentResultListener
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import com.example.a2zapplication.R
 import com.example.a2zapplication.databinding.FragmentAddUserDetailsScreenBinding
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AddUserDetailsScreen : Fragment() {
-    lateinit var binding : FragmentAddUserDetailsScreenBinding
+    private val viewModel: AddUserDetailsViewModel by viewModels()
+    lateinit var binding: FragmentAddUserDetailsScreenBinding
 
+    private var items = mutableListOf<String>()
+    private lateinit var adapter: ArrayAdapter<String>
+    private val args: AddUserDetailsScreenArgs by navArgs()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentAddUserDetailsScreenBinding.inflate(inflater,container,false)
-        val items = listOf("Option 1", "Option 2", "Option 3", "Option 4")
-        val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
-        (binding.menu.editText as? AutoCompleteTextView)?.setAdapter(adapter)
-        binding.classTextView.setDropDownBackgroundResource(R.drawable.custom_dropdown_menu)
+        binding = FragmentAddUserDetailsScreenBinding.inflate(inflater, container, false)
+        initUI()
         return binding.root
     }
 
+    private fun initUI() {
+        initDropDownUI()
+        binding.apply {
+            /**
+             * Getting the dropdown list items from firebase
+             */
+            lifecycleScope.launch {
+                viewModel.fetchClassDetails().collect {
+                    items.clear()
+                    items.addAll(it)
+                    adapter.notifyDataSetChanged()
+                }
+            }
 
+            /**
+             * If we already got those details from login will set here initially
+             */
+            userName.editText?.setText(args.UserDetails.name.orEmpty())
+            email.editText?.setText(args.UserDetails.emailId.orEmpty())
+            number.editText?.setText(args.UserDetails.number.orEmpty())
+
+            classTextView.setOnItemClickListener { _, _, _, _ -> }
+
+            /**
+             * While clicking on the store Button will store these details in DB
+             */
+            storeDetailsInDB.setOnClickListener {
+                if (userName.isValidated(FieldType.NAME) && email.isValidated(FieldType.EMAIL) && number.isValidated(
+                        FieldType.NUMBER)
+                ) {
+                    if (classTextView.text.toString().isNotEmpty()){
+                        Toast.makeText(context, "Everything works fine", Toast.LENGTH_LONG).show()
+                    }else {
+                        Toast.makeText(context, "Select the class", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun initDropDownUI() {
+        binding.classTextView.setDropDownBackgroundResource(R.drawable.custom_dropdown_menu)
+        adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
+        (binding.menu.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+    }
+
+
+    private fun TextInputLayout.isValidated(type: FieldType): Boolean {
+        this.editText?.let {
+            if (it.text.toString().isEmpty()) {
+                it.error = "Field is mandatory"
+                it.isFocusable = true
+                return false
+            }
+            when (type) {
+                FieldType.NAME -> {
+                    if (it.text.length < 3) {
+                        it.error = "Name should be at least 4 characters"
+                        return false
+                    }
+                }
+
+                FieldType.NUMBER -> {
+                    if (it.text.length != 10) {
+                        it.error = "Kindly enter valid mobile number"
+                        return false
+                    }
+
+                }
+
+                FieldType.EMAIL -> {
+                    if (!android.util.Patterns.EMAIL_ADDRESS.matcher(it.text.toString())
+                            .matches()
+                    ) {
+                        it.error = "Kindly enter the valid emailID"
+                        return false
+                    }
+                }
+            }
+        }
+        return true
+    }
+
+    enum class FieldType {
+        NAME,
+        EMAIL,
+        NUMBER
+    }
 }

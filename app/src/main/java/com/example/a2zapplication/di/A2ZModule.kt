@@ -6,6 +6,8 @@ import android.content.Context
 import androidx.room.Room
 import com.example.a2zapplication.data.roomDB.A2ZDatabase
 import com.example.a2zapplication.data.roomDB.dao.UserDao
+import com.example.a2zapplication.repository.addUserDetails.UserDetailsRepo
+import com.example.a2zapplication.repository.addUserDetails.UserDetailsRepoImp
 import com.example.a2zapplication.repository.login.AuthRepository
 import com.example.a2zapplication.repository.login.BaseAuthRepository
 import com.example.a2zapplication.repository.login.firebaseAuthenticator.BaseAuthenticator
@@ -108,5 +110,11 @@ object A2ZModule {
     @Singleton
     fun providesDao(a2ZDatabase: A2ZDatabase) : UserDao{
         return a2ZDatabase.userDao()
+    }
+
+    @Provides
+    @Singleton
+    fun providesUserDetailsRepo(db: FirebaseFirestore) : UserDetailsRepo {
+        return UserDetailsRepoImp(db)
     }
 }

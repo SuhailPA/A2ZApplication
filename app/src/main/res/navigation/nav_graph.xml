@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/addUserDetailsScreen">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -18,10 +18,21 @@
         android:id="@+id/requestingAccessScreen2"
         android:name="com.example.a2zapplication.ui.request_access_screen.RequestingAccessScreen"
         android:label="fragment_requesting_access_screen"
-        tools:layout="@layout/fragment_requesting_access_screen" />
+        tools:layout="@layout/fragment_requesting_access_screen" >
+        <action
+            android:id="@+id/action_requestingAccessScreen2_to_addUserDetailsScreen"
+            app:destination="@id/addUserDetailsScreen" />
+        <argument
+            android:name="User"
+            app:argType="com.example.a2zapplication.data.model.firebase.User" />
+    </fragment>
     <fragment
         android:id="@+id/addUserDetailsScreen"
         android:name="com.example.a2zapplication.ui.add_user_details_screen.AddUserDetailsScreen"
         android:label="fragment_add_user_details_screen"
-        tools:layout="@layout/fragment_add_user_details_screen" />
+        tools:layout="@layout/fragment_add_user_details_screen" >
+        <argument
+            android:name="UserDetails"
+            app:argType="com.example.a2zapplication.data.model.firebase.User" />
+    </fragment>
 </navigation>
