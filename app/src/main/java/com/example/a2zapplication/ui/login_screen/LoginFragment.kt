@@ -96,11 +96,12 @@ class LoginFragment : Fragment() {
         }
 
         viewModel.allEvents.observe(viewLifecycleOwner) { event ->
+            progressBar.dismiss()
             when (event) {
                 is AllEvents.Message -> {
                     when (event.message) {
                         Messages.OTP_DELIVERED -> {
-                            progressBar.dismiss()
+//                            progressBar.dismiss()
                             Toast.makeText(
                                 context,
                                 getString(R.string.otp_delivered),

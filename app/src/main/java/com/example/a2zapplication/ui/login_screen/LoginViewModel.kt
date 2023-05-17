@@ -14,6 +14,7 @@ import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthMissingActivityForRecaptchaException
 import com.google.firebase.auth.PhoneAuthCredential
@@ -64,10 +65,15 @@ class LoginViewModel @Inject constructor(
                             AllEvents.Error("It was an Invalid Request")
                         )
 
-                        is FirebaseTooManyRequestsException -> allChannel.send(AllEvents.Error("The SMS Quota has been exceeded"))
+                        is FirebaseTooManyRequestsException ->{
+                            allChannel.send(AllEvents.Error("The SMS Quota has been exceeded"))
+                        }
                         is FirebaseAuthMissingActivityForRecaptchaException -> allChannel.send(
                             AllEvents.Error("reCaptcha verification attempted with null activity")
                         )
+                        is FirebaseAuthException -> {
+                           allChannel.send(AllEvents.Error("Verifying the app with Recaptcha failed, kindly complete the Recapcha process to continue login to the app"))
+                        }
                     }
                 }
             }
