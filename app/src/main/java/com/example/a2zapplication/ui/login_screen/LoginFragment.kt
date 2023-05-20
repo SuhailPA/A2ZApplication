@@ -20,8 +20,10 @@ import com.example.a2zapplication.data.model.firebase.User
 import com.example.a2zapplication.databinding.FragmentLoginBinding
 import com.example.a2zapplication.utils.AccessType
 import com.example.a2zapplication.utils.AllEvents
+import com.example.a2zapplication.utils.CustomAlertBox
 import com.example.a2zapplication.utils.CustomProgressDialog
 import com.example.a2zapplication.utils.Messages
+import com.example.a2zapplication.utils.Utils
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -43,7 +45,7 @@ class LoginFragment : Fragment() {
     private var binding: FragmentLoginBinding? = null
     private val viewModel: LoginViewModel by viewModels()
     private lateinit var launcher: ActivityResultLauncher<IntentSenderRequest>
-    private lateinit var progressBar : CustomProgressDialog
+    private lateinit var progressBar: CustomProgressDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -79,7 +81,7 @@ class LoginFragment : Fragment() {
             } else {
                 val otp = binding?.otpField?.editText?.text.toString()
                 if (otp.length < 6) binding?.otpField?.error = getString(R.string.invalid_otp)
-                else{
+                else {
                     showProgressBar("Verifying mobile number")
                     viewModel.getCredentials(otp)
                 }
@@ -128,7 +130,7 @@ class LoginFragment : Fragment() {
                 }
 
                 is AllEvents.Error -> {
-                    binding?.mobileEmailEditText?.error = event.error
+                    showAlertBox(event.error)
                 }
 
                 is AllEvents.AccessLevel -> {
@@ -147,9 +149,6 @@ class LoginFragment : Fragment() {
                             binding?.root?.findNavController()?.navigate(action)
                         }
                     }
-                }
-                is AllEvents.FirebaseError -> {
-                    Toast.makeText(context,event.error,Toast.LENGTH_LONG).show()
                 }
 
                 else -> {}
@@ -176,11 +175,22 @@ class LoginFragment : Fragment() {
         showProgressBar("Sending OTP...")
     }
 
-    private fun showProgressBar(message : String){
+    private fun showProgressBar(message: String) {
         context?.let {
             progressBar = CustomProgressDialog(it)
             progressBar.setText(message)
             progressBar.showDialog()
         }
+    }
+
+    private fun showAlertBox(errorMsg: String) {
+        val customAlertBox = context?.let { CustomAlertBox(it) }
+            ?.setMessage(errorMsg)
+            ?.setAlertBoxType(Utils.AlertBoxTypes.ERROR)
+            ?.setTitle("Something went wrong")
+            ?.setPositiveBtn(true, {})
+            ?.setNegativeBtn(false, {})
+            ?.setCancelable(false)
+        customAlertBox?.show()
     }
 }

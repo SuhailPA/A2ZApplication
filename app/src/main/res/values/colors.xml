@@ -7,4 +7,10 @@
     <color name="red">#550000</color>
     <color name="blue">#001D54</color>
     <color name="pink">#CC00FF</color>
+    <color name="customErrorAlertBoxColor">#550000</color>
+    <color name="customErrorAlertBoxBg">#4D4B0000</color>
+    <color name="customNormalAlertBoxColor">#0A4900</color>
+    <color name="customNormalAlertBoxBg">#71285102</color>
+    <color name="customWarningAlertBoxColor">#782F02</color>
+    <color name="customWarningAlertBoxBg">#A5FF5722</color>
 </resources>
