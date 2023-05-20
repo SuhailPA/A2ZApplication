@@ -5,7 +5,7 @@ sealed class AllEvents {
     data class Error(val error: String) : AllEvents()
     data class AccessLevel(val accessType : AccessType) : AllEvents()
 
-    data class FirebaseError(val error : String) : AllEvents()
+    data class Google(val error : GoogleError) : AllEvents()
 }
 
 enum class Messages{
@@ -14,6 +14,9 @@ enum class Messages{
     REQUEST_SENT
 }
 
+enum class GoogleError{
+    ERROR
+}
 enum class AccessType{
     APPROVED,
     REJECTED

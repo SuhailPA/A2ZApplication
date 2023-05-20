@@ -1,6 +1,5 @@
 package com.example.a2zapplication.ui.login_screen
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,25 +12,16 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.example.a2zapplication.R
-import com.example.a2zapplication.data.model.firebase.User
 import com.example.a2zapplication.databinding.FragmentLoginBinding
 import com.example.a2zapplication.utils.AccessType
 import com.example.a2zapplication.utils.AllEvents
 import com.example.a2zapplication.utils.CustomAlertBox
 import com.example.a2zapplication.utils.CustomProgressDialog
+import com.example.a2zapplication.utils.GoogleError
 import com.example.a2zapplication.utils.Messages
 import com.example.a2zapplication.utils.Utils
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.identity.Identity
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
-import com.google.android.material.progressindicator.CircularProgressIndicator
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -45,7 +35,7 @@ class LoginFragment : Fragment() {
     private var binding: FragmentLoginBinding? = null
     private val viewModel: LoginViewModel by viewModels()
     private lateinit var launcher: ActivityResultLauncher<IntentSenderRequest>
-    private lateinit var progressBar: CustomProgressDialog
+    private var progressBar: CustomProgressDialog? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -98,7 +88,10 @@ class LoginFragment : Fragment() {
         }
 
         viewModel.allEvents.observe(viewLifecycleOwner) { event ->
-            progressBar.dismiss()
+            progressBar?.let {
+
+            }
+            if (progressBar?.isShowing() == true) progressBar?.dismiss()
             when (event) {
                 is AllEvents.Message -> {
                     when (event.message) {
@@ -114,7 +107,7 @@ class LoginFragment : Fragment() {
                         }
 
                         Messages.LOGGED_IN -> {
-                            progressBar.dismiss()
+                            progressBar?.dismiss()
                             Toast.makeText(
                                 context,
                                 getString(R.string.successfully_loggedin),
@@ -124,7 +117,6 @@ class LoginFragment : Fragment() {
                             viewModel.checkAccessForUser()
 
                         }
-
                         else -> {}
                     }
                 }
@@ -151,6 +143,13 @@ class LoginFragment : Fragment() {
                     }
                 }
 
+                is AllEvents.Google -> {
+                    when(event.error) {
+                        GoogleError.ERROR -> {
+                            showAlertBox("No Google Accounts found on this device, Kinldy SignIn to any google Account on this device")
+                        }
+                    }
+                }
                 else -> {}
             }
         }
@@ -178,8 +177,8 @@ class LoginFragment : Fragment() {
     private fun showProgressBar(message: String) {
         context?.let {
             progressBar = CustomProgressDialog(it)
-            progressBar.setText(message)
-            progressBar.showDialog()
+            progressBar?.setText(message)
+            progressBar?.showDialog()
         }
     }
 

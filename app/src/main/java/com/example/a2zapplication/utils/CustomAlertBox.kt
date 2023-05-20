@@ -49,16 +49,16 @@ class CustomAlertBox(private val context: Context) {
             Utils.AlertBoxTypes.NORMAL -> {
                 binding.clAlertBox.setBackgroundColor(context.getColor(R.color.customNormalAlertBoxBg))
                 binding.mainAlertBox.strokeColor = context.getColor(R.color.customNormalAlertBoxColor)
-                binding.alertNgtiveBtn.setColorFilter(context.getColor(R.color.customNormalAlertBoxColor), PorterDuff.Mode.SRC_IN)
-                binding.alertPstiveBtn.setColorFilter(context.getColor(R.color.customNormalAlertBoxColor), PorterDuff.Mode.SRC_IN)
+                binding.alertNgtiveBtn.setTextColor(context.getColor(R.color.customNormalAlertBoxColor))
+                binding.alertPstiveBtn.setTextColor(context.getColor(R.color.customNormalAlertBoxColor))
                 binding.mainAlertTitle.setTextColor(context.getColor(R.color.customNormalAlertBoxColor))
                 binding.mainAlertMessage.setTextColor(context.getColor(R.color.customNormalAlertBoxColor))
             }
             Utils.AlertBoxTypes.ERROR -> {
                 binding.clAlertBox.setBackgroundColor(context.getColor(R.color.customErrorAlertBoxBg))
                 binding.mainAlertBox.strokeColor = context.getColor(R.color.customErrorAlertBoxColor)
-                binding.alertNgtiveBtn.setColorFilter(context.getColor(R.color.customErrorAlertBoxColor), PorterDuff.Mode.SRC_IN)
-                binding.alertPstiveBtn.setColorFilter(context.getColor(R.color.customErrorAlertBoxColor), PorterDuff.Mode.SRC_IN)
+                binding.alertNgtiveBtn.setTextColor(context.getColor(R.color.customErrorAlertBoxColor))
+                binding.alertPstiveBtn.setTextColor(context.getColor(R.color.customErrorAlertBoxColor))
                 binding.mainAlertTitle.setTextColor(context.getColor(R.color.customErrorAlertBoxColor))
                 binding.mainAlertMessage.setTextColor(context.getColor(R.color.customErrorAlertBoxColor))
             }
@@ -66,8 +66,8 @@ class CustomAlertBox(private val context: Context) {
             else -> {
                 binding.clAlertBox.setBackgroundColor(context.getColor(R.color.customWarningAlertBoxBg))
                 binding.mainAlertBox.strokeColor = context.getColor(R.color.customWarningAlertBoxColor)
-                binding.alertNgtiveBtn.setColorFilter(context.getColor(R.color.customWarningAlertBoxColor), PorterDuff.Mode.SRC_IN)
-                binding.alertPstiveBtn.setColorFilter(context.getColor(R.color.customWarningAlertBoxColor), PorterDuff.Mode.SRC_IN)
+                binding.alertNgtiveBtn.setTextColor(context.getColor(R.color.customWarningAlertBoxColor))
+                binding.alertPstiveBtn.setTextColor(context.getColor(R.color.customWarningAlertBoxColor))
                 binding.mainAlertTitle.setTextColor(context.getColor(R.color.customWarningAlertBoxColor))
                 binding.mainAlertMessage.setTextColor(context.getColor(R.color.customWarningAlertBoxColor))
             }

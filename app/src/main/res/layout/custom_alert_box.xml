@@ -41,6 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp_10"
             android:textAlignment="center"
+            android:textSize="16sp"
             android:textColor="@color/customErrorAlertBoxColor"
             app:layout_constraintBottom_toTopOf="@+id/guideline3"
             app:layout_constraintEnd_toEndOf="parent"
@@ -50,32 +51,37 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/mainAlertTitle"
             android:layout_width="0dp"
+            android:textSize="20sp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dp_10"
             android:gravity="center"
             android:textColor="@color/customErrorAlertBoxColor"
-            android:textStyle="bold|italic"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/alertBoxImageView"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.imageview.ShapeableImageView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/alertNgtiveBtn"
-            android:layout_width="@dimen/alertBtnSize"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/alertBtnSize"
-            android:src="@drawable/close_48px"
-            android:tint="@color/customErrorAlertBoxColor"
+            android:textColor="@color/customErrorAlertBoxColor"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:text="CANCEL"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/alertPstiveBtn"
             app:layout_constraintStart_toEndOf="@+id/alertBoxImageView"
             app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
-        <com.google.android.material.imageview.ShapeableImageView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/alertPstiveBtn"
-            android:layout_width="@dimen/alertBtnSize"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/alertBtnSize"
-            android:src="@drawable/done_48px"
-            android:tint="@color/customErrorAlertBoxColor"
+            android:textColor="@color/customErrorAlertBoxColor"
+            android:text="OK"
+            android:textSize="14sp"
+            android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

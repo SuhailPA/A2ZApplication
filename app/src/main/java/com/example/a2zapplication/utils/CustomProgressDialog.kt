@@ -5,11 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
-import com.example.a2zapplication.R
 import com.example.a2zapplication.databinding.DialogCustomProgressBarBinding
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.dialog.MaterialDialogs
-import com.google.android.material.textview.MaterialTextView
 
 class CustomProgressDialog (context : Context) : AlertDialog.Builder(context) {
     private val binding : DialogCustomProgressBarBinding = DialogCustomProgressBarBinding.inflate(
@@ -37,6 +33,9 @@ class CustomProgressDialog (context : Context) : AlertDialog.Builder(context) {
     }
     fun dismiss() {
         dialog?.dismiss()
+    }
+    fun isShowing() : Boolean {
+        return dialog?.isShowing ?: false
     }
 
 }

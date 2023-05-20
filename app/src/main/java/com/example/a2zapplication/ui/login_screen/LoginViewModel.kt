@@ -9,6 +9,7 @@ import com.example.a2zapplication.data.model.firebase.User
 import com.example.a2zapplication.repository.login.BaseAuthRepository
 import com.example.a2zapplication.utils.AccessType
 import com.example.a2zapplication.utils.AllEvents
+import com.example.a2zapplication.utils.GoogleError
 import com.example.a2zapplication.utils.Messages
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.google.firebase.FirebaseException
@@ -103,7 +104,7 @@ class LoginViewModel @Inject constructor(
                         userDetails = User(auth.currentUser?.uid.toString(), number = phoneNumber)
                         allChannel.send(AllEvents.Message(Messages.LOGGED_IN))
                     } else {
-                        allChannel.send(AllEvents.Error(task.exception?.message.orEmpty()))
+                        allChannel.send(AllEvents.Google(GoogleError.ERROR))
                     }
                 }
             }
@@ -117,7 +118,7 @@ class LoginViewModel @Inject constructor(
                 beginSignInResult.value = it
             }.addOnFailureListener {
                 viewModelScope.launch {
-                    allChannel.send(AllEvents.Error(it.message.orEmpty()))
+                    allChannel.send(AllEvents.Google(GoogleError.ERROR))
                 }
             }
         }
@@ -140,7 +141,7 @@ class LoginViewModel @Inject constructor(
                         }
                         allChannel.send(AllEvents.Message(Messages.LOGGED_IN))
                     } else {
-                        allChannel.send(AllEvents.Error(task.exception?.message.orEmpty()))
+                        allChannel.send(AllEvents.Google(GoogleError.ERROR))
                     }
                 }
             }
